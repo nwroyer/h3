@@ -668,6 +668,18 @@ DECLSPEC H3Error H3_EXPORT(directedEdgeToCells)(H3Index edge,
                                                 H3Index *originDestination);
 /** @} */
 
+/** @defgroup directedEdgeToVertices \
+ * directedEdgeToVertices
+ * Functions for directedEdgeToVertices
+ * @{
+ */
+/** @brief Returns the start and end vertices from the directed edge
+ * H3Index */
+DECLSPEC H3Error H3_EXPORT(directedEdgeToVertices)(H3Index edge,
+                                                   H3Index* vStart,
+                                                   H3Index* vEnd);
+/** @} */
+
 /** @defgroup originToDirectedEdges \
  * originToDirectedEdges
  * Functions for originToDirectedEdges

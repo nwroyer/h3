@@ -226,6 +226,42 @@ H3Error H3_EXPORT(directedEdgeToCells)(H3Index edge,
     return E_SUCCESS;
 }
 
+
+/**
+ * Provides the vertices at either end of the directed edge.
+ * @param edge The directed edge H3Index
+ * @param vStart The starting vertex H3Index
+ * @param vEnd The starting vertex H3Index
+ */
+H3Error H3_EXPORT(directedEdgeToVertices)(H3Index edge, H3Index* vStart, H3Index* vEnd) {
+    // Get the origin and neighbor direction from the edge
+    Direction direction = H3_GET_RESERVED_BITS(edge);
+    H3Index origin;
+    H3Error originResult = H3_EXPORT(getDirectedEdgeOrigin)(edge, &origin);
+    if (originResult) {
+        return originResult;
+    }
+
+    // Get the start vertex for the edge
+    int startVertex = vertexNumForDirection(origin, direction);
+    if (startVertex == INVALID_VERTEX_NUM) {
+        // This is not actually an edge (i.e. no valid direction),
+        // so return no vertices.
+        return E_DIR_EDGE_INVALID;
+    }
+
+    H3Error err = H3_EXPORT(cellToVertex)(origin, startVertex, vStart);
+    if (err) {
+        return err;
+    }
+    err = H3_EXPORT(cellToVertex)(origin, startVertex + 1, vEnd);
+    if (err) {
+        return err;
+    }
+    return E_SUCCESS;
+}
+
+
 /**
  * Provides all of the directed edges from the current H3Index.
  * @param origin The origin hexagon H3Index to find edges for.
